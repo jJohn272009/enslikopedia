@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Jelajahi pengetahuan bersama Ensiklo, ensiklopedia digital terbuka.">
+  <title>Ensiklo — Ensiklopedia Terbuka</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #202122;
+      --muted: #54595d;
+      --line: #c8ccd1;
+      --soft-line: #eaecf0;
+      --blue: #36c;
+      --blue-hover: #2a4b8d;
+      --paper: #fff;
+      --wash: #f8f9fa;
+      --green: #14866d;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .topbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      padding: 12px clamp(20px, 4vw, 58px);
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(255,255,255,.97);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--ink);
+      min-width: 230px;
+    }
+
+    .brand:hover { text-decoration: none; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--green);
+      font-family: Georgia, serif;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .brand-name { display: block; font-family: Georgia, serif; font-size: 23px; line-height: 1.1; }
+    .brand-tagline { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; letter-spacing: .04em; }
+
+    .search-form {
+      display: flex;
+      width: min(590px, 52vw);
+      height: 42px;
+    }
+    .search-form input {
+      flex: 1;
+      min-width: 0;
+      padding: 8px 13px;
+      border: 1px solid #a2a9b1;
+      border-right: 0;
+      border-radius: 2px 0 0 2px;
+      outline: none;
+    }
+    .search-form input:focus { border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+    .search-form button, .primary-button {
+      padding: 0 18px;
+      border: 1px solid var(--blue);
+      border-radius: 0 2px 2px 0;
+      background: var(--blue);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .search-form #wikiSearchButton { margin-left: 7px; border-radius: 2px; white-space: nowrap; }
+    .search-form button:hover, .primary-button:hover { background: var(--blue-hover); }
+    .top-actions { display: flex; align-items: center; gap: 18px; margin-left: auto; white-space: nowrap; }
+    .top-actions button, .text-button {
+      padding: 5px 0;
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      cursor: pointer;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 27px clamp(20px, 4vw, 58px) 60px;
+      gap: clamp(26px, 4vw, 56px);
+    }
+
+    aside { padding-top: 8px; }
+    .side-heading {
+      margin: 20px 0 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .side-heading:first-child { margin-top: 0; }
+    .side-nav { display: grid; gap: 2px; }
+    .side-nav button {
+      padding: 7px 9px;
+      border: 0;
+      border-radius: 3px;
+      background: transparent;
+      color: var(--blue);
+      cursor: pointer;
+      text-align: left;
+    }
+    .side-nav button:hover, .side-nav button.active { background: #eaecf0; color: var(--ink); }
+    .side-note { margin-top: 27px; padding-top: 17px; border-top: 1px solid var(--soft-line); color: var(--muted); font-size: 12px; }
+
+    main { min-width: 0; }
+    .welcome {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 200px;
+      align-items: center;
+      min-height: 206px;
+      padding: 30px clamp(24px, 4vw, 52px);
+      border: 1px solid #d5e9e3;
+      border-radius: 6px;
+      background: linear-gradient(115deg, #f1f8f5 0%, #f8fbf9 68%, #e8f4ef 100%);
+    }
+    .welcome:after {
+      content: "";
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      right: 21px;
+      top: -20px;
+      border: 1px solid rgba(20,134,109,.16);
+      border-radius: 50%;
+      box-shadow: 0 0 0 22px rgba(20,134,109,.035), 0 0 0 48px rgba(20,134,109,.025);
+      pointer-events: none;
+    }
+    .welcome h1 { margin: 0 0 8px; font-family: Georgia, serif; font-size: clamp(27px, 3vw, 36px); font-weight: 500; line-height: 1.2; }
+    .welcome p { max-width: 590px; margin: 0; color: #444b48; }
+    .welcome-stat { position: relative; z-index: 1; text-align: center; }
+    .stat-number { display: block; color: var(--green); font-family: Georgia, serif; font-size: 40px; line-height: 1.1; }
+    .stat-label { color: var(--muted); font-size: 12px; }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 34px 0 15px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .section-heading h2 { margin: 0; font-family: Georgia, serif; font-size: 22px; font-weight: 500; }
+    .section-heading span { color: var(--muted); font-size: 12px; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+    .feature-card {
+      display: grid;
+      grid-template-columns: 82px minmax(0, 1fr);
+      gap: 16px;
+      min-height: 143px;
+      padding: 17px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      transition: border-color .15s, transform .15s, box-shadow .15s;
+    }
+    .feature-card:hover { border-color: #a7c7bc; box-shadow: 0 4px 14px rgba(32,33,34,.06); transform: translateY(-2px); }
+    .feature-icon {
+      display: grid;
+      place-items: center;
+      width: 82px;
+      height: 82px;
+      border-radius: 4px;
+      background: #f1f8f5;
+      font-size: 38px;
+    }
+    .feature-card h3 { margin: 0 0 5px; font-family: Georgia, serif; font-size: 18px; font-weight: 500; }
+    .feature-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .category-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .category {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-height: 67px;
+      padding: 12px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      background: #fff;
+    }
+    .category:hover { border-color: #a7c7bc; background: var(--wash); }
+    .category-icon { font-size: 22px; }
+    .category strong { display: block; font-size: 13px; }
+    .category small { color: var(--muted); font-size: 11px; }
+
+    .article-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .article-link {
+      display: block;
+      padding: 13px 15px;
+      border-left: 2px solid #a3d3c3;
+      background: var(--wash);
+      color: var(--blue);
+      cursor: pointer;
+      text-align: left;
+    }
+    .article-link:hover { border-color: var(--green); background: #f1f8f5; }
+    .article-link small { display: block; margin-top: 3px; color: var(--muted); }
+    .wiki-attribution { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+    .wiki-results-list { display: grid; gap: 12px; }
+    .wiki-result { padding: 15px 17px; border: 1px solid var(--soft-line); border-radius: 4px; }
+    .wiki-result h3 { margin: 0 0 3px; font-family: Georgia, serif; font-size: 18px; font-weight: 500; }
+    .wiki-result p { margin: 7px 0 0; color: var(--muted); font-size: 13px; }
+    .wiki-result a.external-article { display: inline-block; margin-top: 9px; font-size: 13px; }
+    .contribute-note { max-width: 760px; margin: -4px 0 15px; color: var(--muted); font-size: 13px; }
+    .editor-toggle { min-height: 40px; border-radius: 2px; }
+    .article-form { display: grid; gap: 8px; max-width: 780px; margin-top: 16px; padding: 20px; border: 1px solid var(--soft-line); border-radius: 4px; background: var(--wash); }
+    .article-form[hidden] { display: none; }
+    .article-preview { margin-top: 12px; padding: 18px; border: 1px solid var(--line); background: white; }
+    .article-preview > h2 { margin: 0 0 8px; font-family: Georgia, serif; font-size: 19px; font-weight: 500; }
+    .article-preview > h3 { margin: 10px 0 0; font-family: Georgia, serif; font-size: 25px; font-weight: 500; }
+    .article-form label { margin-top: 5px; font-size: 13px; font-weight: 650; }
+    .article-form input:not([type="file"]), .article-form select, .article-form textarea { width: 100%; padding: 9px 11px; border: 1px solid #a2a9b1; border-radius: 2px; background: white; color: var(--ink); }
+    .article-form input[type="file"] { max-width: 100%; }
+    .article-form textarea { resize: vertical; }
+    .article-form input:focus, .article-form select:focus, .article-form textarea:focus { outline: 2px solid #36c; outline-offset: 1px; }
+    .form-help { color: var(--muted); font-size: 12px; }
+    .form-error { margin: 4px 0; color: #b32424; font-size: 13px; }
+    .form-actions { display: flex; align-items: center; gap: 18px; margin-top: 8px; }
+    .form-actions .primary-button { min-height: 40px; border-radius: 2px; }
+    .article-body .user-article-content { font-family: inherit; }
+    .article-body .user-article-content h2, .article-body .user-article-content h3 { font-family: inherit; }
+    .article-body .user-article-content ul { margin: 0 0 16px 24px; list-style: disc; }
+    .article-body .user-article-content p { margin: 0 0 16px; }
+
+    .article-view { display: none; }
+    .article-view.open { display: block; }
+    .article-view h1 { margin: 0; font-family: Georgia, serif; font-size: 34px; font-weight: 500; }
+    .article-meta { margin: 4px 0 20px; color: var(--muted); font-size: 12px; }
+    .article-body { max-width: 850px; font-family: Georgia, "Times New Roman", serif; font-size: 17px; line-height: 1.8; }
+    .article-body h2 { margin-top: 27px; padding-bottom: 6px; border-bottom: 1px solid var(--line); font-family: inherit; font-size: 23px; font-weight: 500; }
+    .article-tools { display: flex; gap: 16px; padding: 12px 0; border-top: 1px solid var(--soft-line); border-bottom: 1px solid var(--soft-line); font-size: 13px; }
+    .back-link { display: inline-block; margin-bottom: 15px; cursor: pointer; }
+    .empty-state { display: none; margin-top: 16px; padding: 22px; border: 1px solid var(--soft-line); color: var(--muted); }
+    .footer { margin-top: 40px; padding-top: 17px; border-top: 1px solid var(--soft-line); color: var(--muted); font-size: 12px; }
+    .mobile-menu { display: none; }
+    .toast { position: fixed; right: 22px; bottom: 22px; z-index: 10; max-width: min(360px, calc(100vw - 44px)); padding: 12px 16px; border-radius: 4px; background: #202122; color: white; box-shadow: 0 4px 18px #0003; opacity: 0; transform: translateY(8px); pointer-events: none; transition: .2s; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 980px) {
+      .brand { min-width: auto; }
+      .brand-tagline { display: none; }
+      .layout { grid-template-columns: 185px minmax(0, 1fr); gap: 24px; }
+      .category-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 720px) {
+      .topbar { min-height: 65px; gap: 13px; padding: 10px 16px; }
+      .brand-mark { width: 38px; height: 38px; font-size: 21px; }
+      .brand-name { font-size: 19px; }
+      .search-form { width: auto; flex: 1; }
+      .search-form button { padding: 0 11px; }
+      .top-actions { display: none; }
+      .mobile-menu { display: inline-flex; align-items: center; justify-content: center; width: 35px; height: 35px; border: 1px solid var(--line); border-radius: 3px; background: white; cursor: pointer; }
+      .layout { display: block; padding: 18px 16px 40px; }
+      aside { display: none; margin-bottom: 18px; padding: 14px; border: 1px solid var(--soft-line); }
+      aside.open { display: block; }
+      .side-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .welcome { grid-template-columns: 1fr; min-height: 190px; padding: 25px; }
+      .welcome-stat { display: none; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .article-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 440px) {
+      .brand { gap: 7px; }
+      .brand-name { font-size: 17px; }
+      .search-form input { padding: 7px 9px; font-size: 13px; }
+      .search-form button { font-size: 13px; padding: 0 8px; }
+      .article-form { padding: 14px; }
+      .category-list, .article-list { grid-template-columns: 1fr; }
+      .feature-card { grid-template-columns: 62px minmax(0, 1fr); gap: 12px; padding: 13px; }
+      .feature-icon { width: 62px; height: 62px; font-size: 30px; }
+      .section-heading h2 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <button class="mobile-menu" id="menuToggle" aria-label="Buka navigasi" aria-expanded="false">☰</button>
+    <a class="brand" href="#" id="homeLink" aria-label="Ensiklo, halaman utama">
+      <span class="brand-mark" aria-hidden="true">e</span>
+      <span><span class="brand-name">Ensiklo</span><span class="brand-tagline">ENSIKLOPEDIA TERBUKA</span></span>
+    </a>
+    <form class="search-form" id="searchForm" role="search">
+      <input id="searchInput" type="search" placeholder="Cari di Ensiklo atau Wikipedia" aria-label="Cari artikel">
+      <button type="submit">Cari</button>
+      <button type="button" id="wikiSearchButton" title="Cari langsung di Wikipedia bahasa Indonesia">Wiki</button>
+    </form>
+    <nav class="top-actions" aria-label="Akun">
+      <button type="button" data-toast="Fitur pembuatan akun akan segera hadir.">Buat akun</button>
+      <button type="button" data-toast="Selamat datang di Ensiklo!">Masuk</button>
+    </nav>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar" aria-label="Navigasi utama">
+      <div class="side-heading">Jelajahi</div>
+      <nav class="side-nav">
+        <button class="active" data-section="home">Halaman utama</button>
+        <button data-section="featured">Artikel pilihan</button>
+        <button data-section="categories">Kategori</button>
+        <button data-section="recent">Artikel terbaru</button>
+      </nav>
+      <div class="side-heading">Kontribusi</div>
+      <nav class="side-nav">
+        <button data-toast="Panduan kontribusi sedang disiapkan.">Panduan kontributor</button>
+        <button data-action="write-article">Tulis artikel</button>
+      </nav>
+      <div class="side-note">Ensiklo adalah ruang untuk belajar, berbagi, dan menemukan pengetahuan.</div>
+    </aside>
+
+    <main>
+      <section id="homeView">
+        <section class="welcome" id="home">
+          <div>
+            <h1>Selamat datang di Ensiklo</h1>
+            <p>Temukan pengetahuan baru setiap hari. Ensiklo adalah ensiklopedia digital terbuka yang dirancang untuk semua orang.</p>
+          </div>
+          <div class="welcome-stat"><span class="stat-number">11</span><span class="stat-label">artikel contoh tersedia</span></div>
+        </section>
+
+        <section id="featured">
+          <div class="section-heading"><h2>Jelajahi pengetahuan</h2><span>Pilihan untuk memulai</span></div>
+          <div class="feature-grid" id="featureGrid">
+            <article class="feature-card" data-article="tata-surya" data-category="sains">
+              <div class="feature-icon" aria-hidden="true">🪐</div>
+              <div><h3><a href="#" class="article-open" data-article="tata-surya">Tata Surya</a></h3><p>Kenali Matahari, planet-planet, dan beragam benda langit yang menjadi tetangga kosmik kita.</p></div>
+            </article>
+            <article class="feature-card" data-article="hutan-hujan" data-category="alam">
+              <div class="feature-icon" aria-hidden="true">🌿</div>
+              <div><h3><a href="#" class="article-open" data-article="hutan-hujan">Hutan Hujan Tropis</a></h3><p>Ekosistem kaya kehidupan yang membantu menjaga keseimbangan iklim dan keanekaragaman hayati.</p></div>
+            </article>
+            <article class="feature-card" data-article="aksara-nusantara" data-category="budaya">
+              <div class="feature-icon" aria-hidden="true">📜</div>
+              <div><h3><a href="#" class="article-open" data-article="aksara-nusantara">Aksara Nusantara</a></h3><p>Mengenal warisan sistem tulisan yang berkembang di berbagai wilayah kepulauan Indonesia.</p></div>
+            </article>
+            <article class="feature-card" data-article="energi-terbarukan" data-category="teknologi">
+              <div class="feature-icon" aria-hidden="true">☀️</div>
+              <div><h3><a href="#" class="article-open" data-article="energi-terbarukan">Energi Terbarukan</a></h3><p>Sumber energi yang diperbarui oleh proses alam dan perannya dalam masa depan yang berkelanjutan.</p></div>
+            </article>
+            <article class="feature-card" data-article="reformasi-1998" data-category="sejarah">
+              <div class="feature-icon" aria-hidden="true">🕊️</div>
+              <div><h3><a href="#" class="article-open" data-article="reformasi-1998">Demonstrasi dan Kekerasan Mei 1998</a></h3><p>Kronologi Tragedi Trisakti, kerusuhan Mei, dan perubahan politik pada masa Reformasi.</p></div>
+            </article>
+            <article class="feature-card" data-article="ganja-fakta-risiko" data-category="kesehatan">
+              <div class="feature-icon" aria-hidden="true">🩺</div>
+              <div><h3><a href="#" class="article-open" data-article="ganja-fakta-risiko">Ganja: Fakta dan Risiko Kesehatan</a></h3><p>Informasi umum mengenai ganja, dampak kesehatan, dan gambaran aturan hukum di Indonesia.</p></div>
+            </article>
+            <article class="feature-card" data-article="pencegahan-bunuh-diri" data-category="kesehatan">
+              <div class="feature-icon" aria-hidden="true">💚</div>
+              <div><h3><a href="#" class="article-open" data-article="pencegahan-bunuh-diri">Krisis Bunuh Diri: Pencegahan dan Dukungan</a></h3><p>Informasi keselamatan, cara mendampingi orang yang sedang kesulitan, dan akses bantuan.</p></div>
+            </article>
+            <article class="feature-card" data-article="keamanan-siber-etis" data-category="teknologi">
+              <div class="feature-icon" aria-hidden="true">🔐</div>
+              <div><h3><a href="#" class="article-open" data-article="keamanan-siber-etis">Keamanan Siber dan Peretasan Etis</a></h3><p>Memahami ancaman digital, prinsip izin, dan langkah dasar melindungi akun serta perangkat.</p></div>
+            </article>
+            <article class="feature-card" data-article="keamanan-webcam" data-category="teknologi">
+              <div class="feature-icon" aria-hidden="true">📷</div>
+              <div><h3><a href="#" class="article-open" data-article="keamanan-webcam">Privasi dan Keamanan Webcam</a></h3><p>Langkah melindungi kamera, mengatur izin aplikasi, dan merespons dugaan akses tanpa izin.</p></div>
+            </article>
+            <article class="feature-card" data-article="keselamatan-senjata-api" data-category="keselamatan">
+              <div class="feature-icon" aria-hidden="true">🛡️</div>
+              <div><h3><a href="#" class="article-open" data-article="keselamatan-senjata-api">Keselamatan Senjata Api</a></h3><p>Prinsip pencegahan kecelakaan, penyimpanan aman, dan tanggung jawab hukum.</p></div>
+            </article>
+            <article class="feature-card" data-article="munir-said-thalib" data-category="sejarah">
+              <div class="feature-icon" aria-hidden="true">⚖️</div>
+              <div><h3><a href="#" class="article-open" data-article="munir-said-thalib">Munir Said Thalib dan Kasus Pembunuhannya</a></h3><p>Mengenang aktivis HAM Indonesia dan meninjau proses hukum kasus pembunuhannya.</p></div>
+            </article>
+          </div>
+          <div class="empty-state" id="emptyState">Tidak ada artikel yang cocok. Coba kata kunci lain.</div>
+        </section>
+
+        <section id="categories">
+          <div class="section-heading"><h2>Jelajahi berdasarkan topik</h2><span>Pilih bidang yang menarik bagimu</span></div>
+          <div class="category-list">
+            <button class="category" data-filter="sains"><span class="category-icon">🔬</span><span><strong>Sains</strong><small>Alam dan penemuan</small></span></button>
+            <button class="category" data-filter="alam"><span class="category-icon">🌱</span><span><strong>Alam</strong><small>Bumi dan kehidupan</small></span></button>
+            <button class="category" data-filter="budaya"><span class="category-icon">🎭</span><span><strong>Budaya</strong><small>Sejarah dan masyarakat</small></span></button>
+            <button class="category" data-filter="teknologi"><span class="category-icon">🔐</span><span><strong>Teknologi</strong><small>Inovasi dan keamanan digital</small></span></button>
+            <button class="category" data-filter="sejarah"><span class="category-icon">📚</span><span><strong>Sejarah</strong><small>Peristiwa dan perubahan</small></span></button>
+            <button class="category" data-filter="kesehatan"><span class="category-icon">🩺</span><span><strong>Kesehatan</strong><small>Tubuh dan kesejahteraan</small></span></button>
+            <button class="category" data-filter="keselamatan"><span class="category-icon">🛡️</span><span><strong>Keselamatan</strong><small>Pencegahan dan tanggung jawab</small></span></button>
+          </div>
+        </section>
+
+        <section id="recent">
+          <div class="section-heading"><h2>Artikel untuk dibaca</h2><span>Mulai dari sini</span></div>
+          <div class="article-list" id="articleList">
+            <button class="article-link article-open" data-article="tata-surya">Tata Surya<small>Sains · 6 menit baca</small></button>
+            <button class="article-link article-open" data-article="hutan-hujan">Hutan Hujan Tropis<small>Alam · 5 menit baca</small></button>
+            <button class="article-link article-open" data-article="aksara-nusantara">Aksara Nusantara<small>Budaya · 4 menit baca</small></button>
+            <button class="article-link article-open" data-article="reformasi-1998">Demonstrasi dan Kekerasan Mei 1998<small>Sejarah · 5 menit baca</small></button>
+            <button class="article-link article-open" data-article="ganja-fakta-risiko">Ganja: Fakta dan Risiko Kesehatan<small>Kesehatan · 4 menit baca</small></button>
+            <button class="article-link article-open" data-article="pencegahan-bunuh-diri">Krisis Bunuh Diri: Pencegahan dan Dukungan<small>Kesehatan · 4 menit baca</small></button>
+            <button class="article-link article-open" data-article="keamanan-siber-etis">Keamanan Siber dan Peretasan Etis<small>Teknologi · 4 menit baca</small></button>
+            <button class="article-link article-open" data-article="keamanan-webcam">Privasi dan Keamanan Webcam<small>Teknologi · 4 menit baca</small></button>
+            <button class="article-link article-open" data-article="keselamatan-senjata-api">Keselamatan Senjata Api<small>Keselamatan · 4 menit baca</small></button>
+            <button class="article-link article-open" data-article="munir-said-thalib">Munir Said Thalib dan Kasus Pembunuhannya<small>Sejarah · 5 menit baca</small></button>
+          </div>
+        </section>
+
+        <section id="contribute">
+          <div class="section-heading"><h2>Bagikan pengetahuan</h2><span>Kontribusi ke Ensiklo</span></div>
+          <p class="contribute-note">Tulis artikel langsung atau unggah berkas teks/Markdown. Artikel disimpan hanya di browser dan perangkat ini; belum diterbitkan ke internet atau dibagikan dengan pengguna lain.</p>
+          <button type="button" class="primary-button editor-toggle" id="openEditor">Tulis artikel baru</button>
+          <form id="articleForm" class="article-form" hidden>
+            <label for="articleTitleInput">Judul artikel</label>
+            <input id="articleTitleInput" name="title" type="text" maxlength="120" required>
+
+            <label for="articleCategoryInput">Kategori</label>
+            <select id="articleCategoryInput" name="category" required>
+              <option value="sains">Sains</option>
+              <option value="alam">Alam</option>
+              <option value="budaya">Budaya</option>
+              <option value="teknologi">Teknologi</option>
+              <option value="sejarah">Sejarah</option>
+              <option value="kesehatan">Kesehatan</option>
+              <option value="keselamatan">Keselamatan</option>
+            </select>
+
+            <label for="articleSummaryInput">Ringkasan</label>
+            <textarea id="articleSummaryInput" name="summary" rows="2" maxlength="250" required placeholder="Jelaskan isi artikel secara singkat."></textarea>
+
+            <label for="articleFileInput">Unggah berkas (opsional)</label>
+            <input id="articleFileInput" name="file" type="file" accept=".txt,.md,.markdown,text/plain,text/markdown">
+            <small class="form-help">Format .txt atau .md, maksimal 500 KB. HTML dan berkas lain tidak diterima.</small>
+
+            <label for="articleContentInput">Isi artikel</label>
+            <textarea id="articleContentInput" name="content" rows="10" maxlength="20000" required placeholder="Tulis artikel di sini. Gunakan ## untuk subjudul dan - untuk daftar."></textarea>
+            <small class="form-help">Maksimal 20.000 karakter. HTML ditampilkan sebagai teks biasa; judul ## dan daftar - didukung.</small>
+
+            <label for="articleSourcesInput">Sumber atau referensi (opsional, satu per baris)</label>
+            <textarea id="articleSourcesInput" name="sources" rows="3" maxlength="2000" placeholder="https://contoh.id/sumber"></textarea>
+            <section id="articlePreview" class="article-preview" aria-live="polite" hidden>
+              <h2>Pratinjau artikel</h2>
+              <h3 id="previewTitle"></h3>
+              <p class="form-help" id="previewMeta"></p>
+              <div class="article-body" id="previewBody"></div>
+            </section>
+            <p class="form-error" id="articleFormError" role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="button" class="text-button" id="previewArticle">Pratinjau</button>
+              <button type="submit" class="primary-button">Simpan artikel</button>
+              <button type="button" class="text-button" id="cancelEditor">Batal</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="wikiResults" hidden aria-live="polite">
+          <div class="section-heading"><h2>Hasil dari Wikipedia bahasa Indonesia</h2><span id="wikiResultCount"></span></div>
+          <p class="wiki-attribution">Cuplikan singkat dari Wikipedia bahasa Indonesia. Artikel lengkap, riwayat, dan daftar kontributornya tersedia melalui tautan masing-masing. Konten Wikipedia dilisensikan di bawah <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.id" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.</p>
+          <div class="wiki-results-list" id="wikiResultsList"></div>
+        </section>
+      </section>
+
+      <article class="article-view" id="articleView" aria-live="polite">
+        <a class="back-link" href="#" id="backHome">← Kembali ke halaman utama</a>
+        <h1 id="articleTitle"></h1>
+        <div class="article-meta" id="articleMeta"></div>
+        <div class="article-tools"><a href="#" id="shareArticle">Bagikan</a><a href="#" data-toast="Fitur penyuntingan artikel akan segera hadir.">Sunting artikel</a><button type="button" class="text-button" id="deleteUserArticle" hidden>Hapus artikel lokal</button></div>
+        <div class="article-body" id="articleBody"></div>
+      </article>
+      <footer class="footer">Ensiklo adalah demonstrasi ensiklopedia. Artikel sejarah menyertakan sumber bacaan untuk penelusuran lebih lanjut.</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const articles = {
+      "tata-surya": {
+        title: "Tata Surya",
+        category: "Sains",
+        read: "6 menit baca",
+        body: `<p><strong>Tata Surya</strong> adalah lingkungan kosmik yang terdiri atas Matahari dan berbagai benda langit yang terikat oleh gravitasinya. Di dalamnya terdapat delapan planet, satelit alami, planet kerdil, asteroid, dan komet.</p>
+          <h2>Matahari dan planet-planet</h2>
+          <p>Matahari merupakan bintang di pusat sistem ini. Energi yang dipancarkannya menjadi sumber cahaya dan panas bagi Bumi. Planet-planet bergerak mengelilinginya pada lintasan yang disebut orbit. Empat planet bagian dalam—Merkurius, Venus, Bumi, dan Mars—memiliki permukaan berbatu. Di luarnya terdapat Jupiter, Saturnus, Uranus, dan Neptunus yang berukuran jauh lebih besar.</p>
+          <h2>Benda langit lainnya</h2>
+          <p>Selain planet, Tata Surya juga dihuni oleh bulan, asteroid, dan komet. Sabuk asteroid berada di antara Mars dan Jupiter, sedangkan banyak komet berasal dari wilayah dingin yang jauh dari Matahari. Penelitian terhadap benda-benda ini membantu para ilmuwan memahami bagaimana lingkungan kosmik kita terbentuk.</p>`
+      },
+      "hutan-hujan": {
+        title: "Hutan Hujan Tropis",
+        category: "Alam",
+        read: "5 menit baca",
+        body: `<p><strong>Hutan hujan tropis</strong> adalah ekosistem di wilayah hangat dengan curah hujan tinggi sepanjang tahun. Hutan ini memiliki lapisan vegetasi yang beragam dan menjadi habitat bagi banyak spesies tumbuhan serta satwa.</p>
+          <h2>Keanekaragaman kehidupan</h2>
+          <p>Kanopi pepohonan menangkap cahaya matahari, sementara lapisan bawah menyediakan lingkungan lembap bagi tumbuhan dan hewan yang berbeda. Hubungan antara tanah, air, iklim, dan organisme membentuk jaringan kehidupan yang saling bergantung.</p>
+          <h2>Peran bagi bumi</h2>
+          <p>Hutan menyimpan karbon, membantu mengatur siklus air, dan menyediakan sumber penghidupan bagi banyak komunitas. Perlindungan habitat dan pengelolaan yang bertanggung jawab dapat membantu menjaga manfaat ini untuk generasi mendatang.</p>`
+      },
+      "aksara-nusantara": {
+        title: "Aksara Nusantara",
+        category: "Budaya",
+        read: "4 menit baca",
+        body: `<p><strong>Aksara Nusantara</strong> merujuk pada beragam sistem tulisan yang tumbuh dan digunakan di kepulauan Indonesia. Setiap aksara berkembang dalam konteks bahasa, tradisi, dan sejarah masyarakat yang menggunakannya.</p>
+          <h2>Warisan tulisan</h2>
+          <p>Prasasti, naskah, dan catatan pada berbagai media menjadi sumber penting untuk mempelajari perjalanan masyarakat. Bentuk huruf dan cara penulisannya menunjukkan pertukaran gagasan serta kreativitas lokal dari masa ke masa.</p>
+          <h2>Pelestarian masa kini</h2>
+          <p>Pembelajaran, dokumentasi, dan penggunaan teknologi digital membuka cara baru untuk merawat warisan aksara. Upaya ini membantu generasi sekarang mengenali kekayaan budaya sekaligus menjaga akses terhadap sumber sejarah.</p>`
+      },
+      "energi-terbarukan": {
+        title: "Energi Terbarukan",
+        category: "Teknologi",
+        read: "5 menit baca",
+        body: `<p><strong>Energi terbarukan</strong> berasal dari sumber alam yang dapat pulih secara berkelanjutan, seperti sinar matahari, angin, aliran air, dan panas bumi. Pemanfaatannya menjadi salah satu cara untuk memenuhi kebutuhan energi dengan dampak lingkungan yang lebih rendah.</p>
+          <h2>Beragam sumber energi</h2>
+          <p>Panel surya mengubah cahaya menjadi listrik, turbin angin memanfaatkan gerakan udara, dan pembangkit hidro menggunakan aliran air. Setiap teknologi memiliki kondisi penggunaan yang sesuai dengan karakteristik wilayahnya.</p>
+          <h2>Tantangan dan peluang</h2>
+          <p>Penyimpanan energi, jaringan listrik, biaya, dan perencanaan lokasi merupakan bagian penting dalam pengembangan energi terbarukan. Inovasi dan kebijakan yang tepat dapat membantu memperluas akses sekaligus mendukung penggunaan energi yang lebih bijak.</p>`
+      },
+      "reformasi-1998": {
+        title: "Demonstrasi dan Kekerasan Mei 1998",
+        category: "Sejarah Indonesia",
+        read: "5 menit baca",
+        body: `<p><strong>Peristiwa Mei 1998</strong> berlangsung di tengah krisis ekonomi dan tuntutan reformasi politik pada akhir pemerintahan Presiden Soeharto. Demonstrasi mahasiswa menuntut perubahan; penembakan di Universitas Trisakti dan kerusuhan yang menyusul merupakan peristiwa terkait dalam rangkaian waktu yang sama, tetapi bukan peristiwa yang identik.</p>
+          <h2>12 Mei: penembakan Trisakti</h2>
+          <p>Pada 12 Mei 1998, empat mahasiswa Universitas Trisakti tewas ditembak setelah demonstrasi di Jakarta. Human Rights Watch (HRW) dalam laporan tahunannya menyebut mereka tampaknya ditembak oleh penembak jitu dari unsur militer atau kepolisian. Kata “tampaknya” penting: laporan tersebut menggambarkan informasi dan dugaan pada saat itu, bukan putusan pengadilan yang menetapkan identitas pelaku.</p>
+          <h2>13–15 Mei: kerusuhan</h2>
+          <p>Kerusuhan besar terjadi di Jakarta mulai 13 Mei dan berlanjut selama beberapa hari. Laporan HRW mencatat kekerasan terhadap warga dan pembakaran pusat perbelanjaan; lebih dari seribu orang meninggal, banyak di antaranya terjebak dalam kebakaran di pusat perbelanjaan. Angka ini mengikuti laporan HRW dan tidak berarti seluruh korban meninggal dalam demonstrasi atau akibat penembakan Trisakti.</p>
+          <h2>Perubahan politik</h2>
+          <p>Mahasiswa menduduki gedung parlemen pada 19 Mei. Pada 21 Mei 1998, Soeharto mengundurkan diri dan menyerahkan jabatan presiden kepada B.J. Habibie. Peristiwa tersebut menjadi bagian penting dari masa Reformasi Indonesia.</p>
+          <h2>Sumber</h2>
+          <p>Ringkasan ini merujuk pada laporan <a href="https://www.hrw.org/legacy/worldreport99/asia/indonesia.html" target="_blank" rel="noopener noreferrer">Human Rights Watch, World Report 1999: Indonesia</a>. Rangkaian peristiwa dan angka korban di atas disajikan sesuai laporan tersebut; atribusi pelaku penembakan tidak dinyatakan sebagai kesimpulan hukum.</p>`
+      },
+      "ganja-fakta-risiko": {
+        title: "Ganja: Fakta dan Risiko Kesehatan",
+        category: "Kesehatan",
+        read: "4 menit baca",
+        body: `<p><strong>Ganja</strong> adalah nama yang umum digunakan untuk tanaman <em>Cannabis</em> dan produk yang berasal darinya. Tanaman ini mengandung berbagai senyawa; THC dapat memengaruhi persepsi dan fungsi otak. Artikel ini memberi informasi kesehatan dan hukum secara umum, bukan petunjuk untuk memperoleh atau menggunakan zat tersebut.</p>
+          <h2>Dampak pada kesehatan</h2>
+          <p>Menurut Centers for Disease Control and Prevention (CDC), ganja dapat memengaruhi perhatian, ingatan, pengambilan keputusan, koordinasi, dan waktu reaksi. Penggunaan dapat menimbulkan gangguan penggunaan zat; risiko lebih tinggi dikaitkan dengan mulai pada usia muda dan penggunaan yang lebih sering. Mengemudi setelah terpapar zat yang mengganggu fungsi kognitif dan koordinasi berbahaya.</p>
+          <p>CDC juga mencatat hubungan antara penggunaan ganja dan sejumlah masalah kesehatan mental, termasuk kecemasan, depresi, dan psikosis. Hubungan tersebut tidak selalu membuktikan sebab-akibat dan masih diteliti; dampaknya dapat berbeda pada tiap orang.</p>
+          <h2>Aturan hukum di Indonesia</h2>
+          <p>Pengaturan narkotika di Indonesia tercantum dalam <a href="https://peraturan.bpk.go.id/Details/38776/uu-no-35-tahun-2009" target="_blank" rel="noopener noreferrer">Undang-Undang Nomor 35 Tahun 2009 tentang Narkotika</a>. Status dan ketentuan hukum dapat berubah serta bergantung pada konteks; periksa peraturan resmi terbaru atau minta nasihat hukum dari pihak yang berwenang. Artikel ini bukan nasihat hukum.</p>
+          <h2>Bantuan kesehatan</h2>
+          <p>Jika penggunaan zat mengganggu kesehatan, keselamatan, sekolah, pekerjaan, atau hubungan, bicarakan dengan tenaga kesehatan atau layanan rehabilitasi resmi. Bila seseorang tampak mengalami kondisi darurat atau membahayakan diri sendiri maupun orang lain, hubungi layanan darurat setempat.</p>
+          <h2>Sumber</h2>
+          <p><a href="https://www.cdc.gov/cannabis/health-effects/index.html" target="_blank" rel="noopener noreferrer">CDC: Cannabis and Health Effects</a> · <a href="https://www.cdc.gov/cannabis/health-effects/mental-health.html" target="_blank" rel="noopener noreferrer">CDC: Cannabis and Mental Health</a> · <a href="https://peraturan.bpk.go.id/Details/38776/uu-no-35-tahun-2009" target="_blank" rel="noopener noreferrer">Database Peraturan BPK: UU No. 35 Tahun 2009</a>.</p>`
+      },
+      "pencegahan-bunuh-diri": {
+        title: "Krisis Bunuh Diri: Pencegahan dan Dukungan",
+        category: "Kesehatan mental",
+        read: "4 menit baca",
+        body: `<p><strong>Pemikiran untuk bunuh diri adalah tanda bahwa seseorang membutuhkan dukungan, bukan sesuatu yang harus dihadapi sendirian.</strong> Krisis dapat terasa sangat berat, tetapi bantuan tersedia dan keadaan dapat berubah. Artikel ini berfokus pada pencegahan dan dukungan, bukan cara untuk menyakiti diri.</p>
+          <h2>Mengenali kebutuhan akan bantuan</h2>
+          <p>Perubahan perilaku yang mengkhawatirkan, rasa putus asa yang berat, menarik diri dari orang lain, atau berbicara tentang tidak ingin hidup dapat menjadi alasan untuk menanyakan keadaan seseorang dan menawarkan dukungan. Tanda-tanda ini tidak cukup untuk mendiagnosis seseorang. Dengarkan dengan tenang, tanggapi dengan serius, dan hindari menghakimi atau meremehkan perasaannya.</p>
+          <h2>Langkah dukungan</h2>
+          <p>Tanyakan secara langsung dan penuh empati apakah ia sedang merasa tidak aman atau berpikir untuk menyakiti diri. Temani orang tersebut dan bantu menghubungkannya dengan orang tepercaya, tenaga kesehatan, atau layanan krisis. Jika ada bahaya segera, jangan tinggalkan ia sendirian; hubungi layanan darurat setempat atau bawa ke unit gawat darurat. Kurangi paparan terhadap hal-hal yang dapat membahayakan dengan bantuan orang dewasa atau profesional yang tepercaya.</p>
+          <h2>Mencari bantuan di Indonesia</h2>
+          <p><a href="https://www.healing119.id/" target="_blank" rel="noopener noreferrer">Healing119.id</a> adalah layanan dukungan psikologis dan krisis dari Kementerian Kesehatan RI. Kunjungi situs resminya untuk melihat pilihan kontak dan informasi layanan terbaru. Anda juga dapat menghubungi tenaga kesehatan, rumah sakit, atau orang tepercaya di sekitar Anda.</p>
+          <p><strong>Jika artikel ini berkaitan dengan keadaan Anda sekarang:</strong> tolong hubungi seseorang yang Anda percaya dan jangan hadapi ini sendirian. Jika Anda merasa mungkin menyakiti diri dalam waktu dekat, pergi ke IGD terdekat atau hubungi layanan darurat setempat sekarang.</p>
+          <h2>Sumber</h2>
+          <p><a href="https://www.who.int/news-room/fact-sheets/detail/suicide" target="_blank" rel="noopener noreferrer">Organisasi Kesehatan Dunia (WHO): Suicide</a> · <a href="https://www.healing119.id/" target="_blank" rel="noopener noreferrer">Kementerian Kesehatan RI: Healing119.id</a>.</p>`
+      },
+      "keamanan-siber-etis": {
+        title: "Keamanan Siber dan Peretasan Etis",
+        category: "Teknologi",
+        read: "4 menit baca",
+        body: `<p><strong>Keamanan siber</strong> adalah upaya melindungi perangkat, akun, jaringan, dan informasi dari akses atau gangguan yang tidak diinginkan. Istilah “peretasan etis” biasanya merujuk pada evaluasi keamanan yang dilakukan dengan izin jelas, ruang lingkup yang disepakati, dan tujuan memperbaiki kelemahan.</p>
+          <h2>Izin dan tanggung jawab</h2>
+          <p>Pengujian hanya boleh dilakukan pada sistem milik sendiri atau sistem yang pemiliknya telah memberi izin tertulis. Izin sebaiknya menjelaskan sistem yang dicakup, waktu, batas pengujian, cara menangani data, dan jalur pelaporan. Jangan mencoba masuk ke akun atau jaringan orang lain, mengganggu layanan, atau mengambil data tanpa izin. Jika menemukan kelemahan secara tidak sengaja, hentikan pengujian dan laporkan melalui kanal resmi pemilik sistem.</p>
+          <h2>Risiko digital yang umum</h2>
+          <p>Ancaman dapat mencakup pesan phishing yang menyamar sebagai pihak tepercaya, kata sandi yang dipakai ulang atau mudah ditebak, perangkat lunak yang tidak diperbarui, serta pengaturan akses yang keliru. OWASP Top 10 merangkum kategori risiko keamanan aplikasi web untuk membantu pengembang mengenali area yang perlu diperhatikan. Informasi tersebut sebaiknya digunakan untuk mencegah dan memperbaiki masalah, bukan menyerang layanan.</p>
+          <h2>Melindungi akun dan perangkat</h2>
+          <p>Gunakan kata sandi yang unik dan kuat untuk setiap akun, aktifkan autentikasi multifaktor bila tersedia, pasang pembaruan dari sumber resmi, waspadai tautan atau lampiran yang tidak diharapkan, dan buat cadangan data penting. Organisasi juga perlu membatasi akses sesuai kebutuhan, mengedukasi pengguna, serta memiliki rencana untuk menanggapi insiden.</p>
+          <h2>Belajar dengan aman</h2>
+          <p>Pelajari konsep keamanan melalui materi resmi, latihan yang memang dirancang untuk pendidikan, atau laboratorium lokal yang terisolasi. Jangan memindai, menguji, atau memodifikasi sistem pihak lain tanpa persetujuan eksplisit. Artikel ini adalah pengantar umum dan tidak berisi instruksi untuk membobol sistem.</p>
+          <h2>Sumber</h2>
+          <p><a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">OWASP: Top 10 Web Application Security Risks</a> · <a href="https://www.cisa.gov/cybersecurity-awareness-month" target="_blank" rel="noopener noreferrer">CISA: Cybersecurity Awareness</a>.</p>`
+      },
+      "keamanan-webcam": {
+        title: "Privasi dan Keamanan Webcam",
+        category: "Teknologi",
+        read: "4 menit baca",
+        body: `<p><strong>Webcam</strong> adalah kamera yang terhubung ke komputer, telepon, atau jaringan. Karena dapat menangkap gambar pribadi, aksesnya perlu dibatasi pada aplikasi tepercaya dan digunakan dengan persetujuan orang yang berada di dalam jangkauan kamera. Mengakses kamera orang lain tanpa izin merupakan pelanggaran privasi dan dapat melanggar hukum.</p>
+          <h2>Cara mengurangi risiko</h2>
+          <p>Pasang pembaruan sistem dan aplikasi dari sumber resmi. Tinjau izin kamera dan cabut akses aplikasi yang tidak diperlukan. Gunakan kata sandi unik dan kuat pada akun perangkat serta aktifkan autentikasi multifaktor jika tersedia. Untuk kamera yang terhubung ke jaringan, ubah kata sandi bawaan, amankan jaringan Wi-Fi, dan matikan akses jarak jauh yang tidak digunakan. Penutup kamera fisik dapat menjadi perlindungan tambahan saat kamera tidak dipakai.</p>
+          <h2>Jika mencurigai akses tanpa izin</h2>
+          <p>Indikator kamera atau aktivitas perangkat yang tidak biasa bukan bukti pasti bahwa seseorang telah mengakses kamera. Hentikan penggunaan kamera untuk hal sensitif, tutup penutup fisik atau putuskan koneksi perangkat bila perlu, lalu tinjau izin kamera dan aplikasi yang terpasang. Dari perangkat tepercaya, ganti kata sandi akun terkait, aktifkan autentikasi multifaktor, dan jalankan pemindaian keamanan dengan perangkat lunak tepercaya. Perbarui sistem operasi dan hubungi dukungan resmi produsen atau organisasi Anda.</p>
+          <p>Simpan catatan atau bukti yang relevan tanpa menyebarkan gambar pribadi. Jika ada ancaman, pemerasan, atau rekaman intim yang dibagikan tanpa persetujuan, minta bantuan orang tepercaya dan laporkan ke platform serta pihak berwenang setempat. Jangan mencoba membalas dengan mengakses perangkat orang lain.</p>
+          <h2>Prinsip penggunaan yang bertanggung jawab</h2>
+          <p>Gunakan kamera hanya pada perangkat dan akun yang Anda miliki atau kelola dengan izin. Beri tahu orang lain saat kamera merekam, patuhi aturan privasi di tempat kerja atau ruang bersama, dan jangan merekam atau membagikan gambar seseorang tanpa persetujuan yang semestinya.</p>
+          <h2>Sumber</h2>
+          <p><a href="https://www.cisa.gov/news-events/news/securing-internet-things-iot" target="_blank" rel="noopener noreferrer">CISA: Securing Internet of Things (IoT)</a> · <a href="https://consumer.ftc.gov/articles/how-secure-your-home-security-cameras" target="_blank" rel="noopener noreferrer">Federal Trade Commission: How to Secure Your Home Security Cameras</a>.</p>`
+      },
+      "keselamatan-senjata-api": {
+        title: "Keselamatan Senjata Api",
+        category: "Keselamatan",
+        read: "4 menit baca",
+        body: `<p><strong>Senjata api memiliki risiko cedera serius dan kematian.</strong> Artikel ini membahas pencegahan kecelakaan dan tanggung jawab umum, bukan petunjuk mengoperasikan, membidikkan, atau menembakkan pistol.</p>
+          <h2>Mencegah akses dan kecelakaan</h2>
+          <p>Jauhkan senjata api dan amunisi dari anak-anak, orang yang tidak berwenang, atau siapa pun yang sedang mengalami krisis. Jika senjata api berada di rumah, penyimpanan harus terkunci dan tidak dapat diakses pihak yang tidak berhak; ikuti aturan dan panduan keselamatan resmi yang berlaku. Jangan menyentuh atau memindahkan senjata api yang ditemukan. Jaga jarak dan hubungi pihak berwenang atau petugas yang berkompeten.</p>
+          <h2>Tanggung jawab dan hukum</h2>
+          <p>Kepemilikan, penyimpanan, dan penggunaan senjata api diatur oleh hukum dan persyaratan izin. Aturannya bergantung pada yurisdiksi serta dapat berubah. Di Indonesia, mintalah informasi terkini dari Kepolisian Negara Republik Indonesia atau penasihat hukum yang berkualifikasi sebelum mengambil tindakan apa pun. Halaman resmi <a href="https://www.polri.go.id/" target="_blank" rel="noopener noreferrer">Polri</a> menyediakan informasi layanan kepolisian.</p>
+          <h2>Jika ada bahaya segera</h2>
+          <p>Jika seseorang mengancam akan menggunakan senjata api atau ada risiko langsung, jangan mencoba merebut atau menangani senjata tersebut. Menjauh ke tempat aman, hindari konfrontasi, dan hubungi layanan darurat atau kepolisian setempat sesegera mungkin.</p>
+          <h2>Sumber</h2>
+          <p><a href="https://www.polri.go.id/" target="_blank" rel="noopener noreferrer">Kepolisian Negara Republik Indonesia</a>. Artikel ini bersifat informatif dan bukan pengganti pelatihan keselamatan tersertifikasi atau nasihat hukum.</p>`
+      },
+      "munir-said-thalib": {
+        title: "Munir Said Thalib dan Kasus Pembunuhannya",
+        category: "Sejarah Indonesia",
+        read: "5 menit baca",
+        body: `<p><strong>Munir Said Thalib</strong> (1965–2004) adalah aktivis hak asasi manusia Indonesia. Ia turut mendirikan Komisi untuk Orang Hilang dan Korban Tindak Kekerasan (KontraS) dan Imparsial, serta dikenal karena advokasinya bagi korban pelanggaran HAM.</p>
+          <h2>Kematian dalam penerbangan</h2>
+          <p>Munir meninggal pada 7 September 2004 dalam penerbangan Garuda Indonesia dari Jakarta menuju Amsterdam. Pemeriksaan forensik di Belanda menemukan arsenik dalam tubuhnya. Kematian tersebut kemudian diselidiki dan diproses sebagai pembunuhan.</p>
+          <h2>Proses pengadilan</h2>
+          <p>Pilot Garuda Pollycarpus Budihari Priyanto diadili dan pada 2005 dijatuhi hukuman penjara atas pembunuhan Munir. Perkara ini melalui proses banding dan peninjauan kembali; Pollycarpus kembali dinyatakan bersalah pada 2008. Jalannya perkara dan perubahan putusan menjadi bagian penting dari rekam jejak kasus ini.</p>
+          <p>Mantan pejabat intelijen Muchdi Purwopranjono juga diadili atas tuduhan terkait pembunuhan tersebut, tetapi dibebaskan oleh pengadilan pada 2008. Karena itu, dugaan mengenai pihak lain tidak boleh disampaikan sebagai kesimpulan hukum tanpa bukti dan putusan yang dapat diverifikasi. Keluarga Munir dan organisasi HAM terus menyerukan pengungkapan menyeluruh atas kasus ini.</p>
+          <h2>Warisan dan arti penting</h2>
+          <p>Kasus Munir menjadi perhatian luas dalam pembahasan perlindungan pembela HAM, independensi penyelidikan, dan akuntabilitas. Peringatan terhadap Munir juga menjadi pengingat akan pentingnya kebebasan masyarakat sipil serta perlindungan bagi orang yang mendokumentasikan pelanggaran.</p>
+          <h2>Sumber untuk membaca lebih lanjut</h2>
+          <ul>
+            <li><a href="https://id.wikipedia.org/wiki/Munir_Said_Thalib" target="_blank" rel="noopener noreferrer">Wikipedia bahasa Indonesia: Munir Said Thalib</a> — lihat rujukan dan riwayat suntingan pada halaman sumber.</li>
+            <li><a href="https://kontras.org/2019/07/25/bunuh-munir-sebuah-buku-putih/" target="_blank" rel="noopener noreferrer">KontraS: Bunuh Munir! Sebuah Buku Putih</a>.</li>
+            <li><a href="https://print.kompas.com/baca/2015/09/07/Menggugat-11-Tahun-Pembunuhan-Munir" target="_blank" rel="noopener noreferrer">Kompas: Menggugat 11 Tahun Pembunuhan Munir</a>.</li>
+          </ul>
+          <p>Ringkasan ini membedakan putusan pengadilan dari tuduhan atau dugaan. Untuk pembaruan, periksa sumber berita tepercaya dan dokumen resmi perkara.</p>`
+      }
+    };
+
+    const homeView = document.getElementById("homeView");
+    const articleView = document.getElementById("articleView");
+    const toast = document.getElementById("toast");
+    let toastTimer;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    const userArticleStorageKey = "ensiklo.userArticles.v1";
+    const categoryNames = {
+      sains: "Sains",
+      alam: "Alam",
+      budaya: "Budaya",
+      teknologi: "Teknologi",
+      sejarah: "Sejarah",
+      kesehatan: "Kesehatan",
+      keselamatan: "Keselamatan"
+    };
+
+    function loadUserArticles() {
+      try {
+        const stored = localStorage.getItem(userArticleStorageKey);
+        if (!stored) return {};
+        const parsed = JSON.parse(stored);
+        if (!Array.isArray(parsed) || parsed.some((article) =>
+          !article || typeof article.id !== "string" ||
+          typeof article.title !== "string" ||
+          typeof article.category !== "string" ||
+          typeof article.summary !== "string" ||
+          typeof article.content !== "string" ||
+          typeof article.sources !== "string"
+        )) {
+          throw new Error("Format artikel tersimpan tidak valid.");
+        }
+        return Object.fromEntries(parsed.map((article) => [article.id, article]));
+      } catch (error) {
+        console.error("Artikel tersimpan tidak dapat dimuat:", error);
+        showToast("Artikel lokal tidak dapat dimuat. Penyimpanan browser mungkin bermasalah.");
+        return {};
+      }
+    }
+
+    const userArticles = loadUserArticles();
+    Object.assign(articles, userArticles);
+
+    function addUserArticleCard(article) {
+      const card = document.createElement("article");
+      card.className = "feature-card";
+      card.dataset.article = article.id;
+      card.dataset.category = article.category;
+
+      const icon = document.createElement("div");
+      icon.className = "feature-icon";
+      icon.setAttribute("aria-hidden", "true");
+      icon.textContent = "📝";
+
+      const details = document.createElement("div");
+      const heading = document.createElement("h3");
+      const link = document.createElement("a");
+      link.href = "#";
+      link.className = "article-open";
+      link.dataset.article = article.id;
+      link.textContent = article.title;
+      heading.append(link);
+      const summary = document.createElement("p");
+      summary.textContent = article.summary;
+      details.append(heading, summary);
+      card.append(icon, details);
+      document.getElementById("featureGrid").append(card);
+
+      const listItem = document.createElement("button");
+      listItem.type = "button";
+      listItem.className = "article-link article-open";
+      listItem.dataset.article = article.id;
+      listItem.append(document.createTextNode(article.title));
+      const category = document.createElement("small");
+      category.textContent = `${categoryNames[article.category]} · Artikel kontributor`;
+      listItem.append(category);
+      document.getElementById("articleList").append(listItem);
+    }
+
+    Object.values(userArticles).forEach(addUserArticleCard);
+    document.querySelector(".stat-number").textContent = String(Object.keys(articles).length);
+
+    function renderUserArticle(article, body = document.getElementById("articleBody")) {
+      body.replaceChildren();
+      const content = document.createElement("div");
+      content.className = "user-article-content";
+      const lines = article.content.replace(/\r\n?/g, "\n").split("\n");
+      let paragraphLines = [];
+      let list = null;
+
+      function flushParagraph() {
+        if (!paragraphLines.length) return;
+        const paragraph = document.createElement("p");
+        paragraph.textContent = paragraphLines.join(" ");
+        content.append(paragraph);
+        paragraphLines = [];
+      }
+
+      lines.forEach((line) => {
+        const heading = line.match(/^(#{1,3})\s+(.+)$/);
+        const listItem = line.match(/^\s*[-*]\s+(.+)$/);
+        if (heading) {
+          flushParagraph();
+          list = null;
+          const element = document.createElement(heading[1].length === 1 ? "h2" : "h3");
+          element.textContent = heading[2];
+          content.append(element);
+        } else if (listItem) {
+          flushParagraph();
+          if (!list) {
+            list = document.createElement("ul");
+            content.append(list);
+          }
+          const item = document.createElement("li");
+          item.textContent = listItem[1];
+          list.append(item);
+        } else if (!line.trim()) {
+          flushParagraph();
+          list = null;
+        } else {
+          list = null;
+          paragraphLines.push(line.trim());
+        }
+      });
+      flushParagraph();
+      body.append(content);
+
+      const sourceLines = article.sources.split(/\r?\n/).map((source) => source.trim()).filter(Boolean);
+      if (sourceLines.length) {
+        const heading = document.createElement("h2");
+        heading.textContent = "Sumber";
+        const listElement = document.createElement("ul");
+        sourceLines.forEach((source) => {
+          const item = document.createElement("li");
+          try {
+            const url = new URL(source);
+            if (url.protocol === "https:" || url.protocol === "http:") {
+              const link = document.createElement("a");
+              link.href = url.href;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              link.textContent = source;
+              item.append(link);
+            } else {
+              item.textContent = source;
+            }
+          } catch {
+            item.textContent = source;
+          }
+          listElement.append(item);
+        });
+        body.append(heading, listElement);
+      }
+    }
+
+    function openArticle(id) {
+      const article = articles[id];
+      if (!article) return;
+      document.getElementById("articleTitle").textContent = article.title;
+      document.getElementById("articleMeta").textContent = `${categoryNames[article.category] || article.category} · ${article.read} · Ensiklo`;
+      document.getElementById("deleteUserArticle").hidden = typeof article.content !== "string";
+      if (typeof article.content === "string") {
+        renderUserArticle(article);
+      } else {
+        document.getElementById("articleBody").innerHTML = article.body;
+      }
+      homeView.hidden = true;
+      articleView.classList.add("open");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      history.replaceState(null, "", `#${id}`);
+    }
+
+    function showHome() {
+      articleView.classList.remove("open");
+      homeView.hidden = false;
+      document.getElementById("wikiResults").hidden = true;
+      document.getElementById("featureGrid").style.display = "grid";
+      document.querySelectorAll(".feature-card").forEach((card) => { card.style.display = "grid"; });
+      document.getElementById("emptyState").style.display = "none";
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+
+    document.addEventListener("click", (event) => {
+      const item = event.target.closest(".article-open");
+      if (!item) return;
+      event.preventDefault();
+      openArticle(item.dataset.article);
+    });
+
+    document.getElementById("backHome").addEventListener("click", (event) => {
+      event.preventDefault();
+      showHome();
+    });
+
+    document.getElementById("deleteUserArticle").addEventListener("click", () => {
+      const id = location.hash.slice(1);
+      if (!userArticles[id] || !window.confirm("Hapus artikel ini dari browser? Tindakan ini tidak dapat dibatalkan.")) return;
+      const updatedArticles = Object.values(userArticles).filter((article) => article.id !== id);
+      try {
+        localStorage.setItem(userArticleStorageKey, JSON.stringify(updatedArticles));
+      } catch (error) {
+        console.error("Artikel lokal tidak dapat dihapus dari penyimpanan:", error);
+        showToast("Artikel gagal dihapus dari penyimpanan browser.");
+        return;
+      }
+      delete userArticles[id];
+      delete articles[id];
+      document.querySelectorAll(".feature-card, .article-link").forEach((item) => {
+        if (item.dataset.article === id) item.remove();
+      });
+      document.querySelector(".stat-number").textContent = String(Object.keys(articles).length);
+      showHome();
+      showToast("Artikel lokal berhasil dihapus.");
+    });
+    document.getElementById("homeLink").addEventListener("click", (event) => {
+      event.preventDefault();
+      showHome();
+    });
+
+    document.querySelectorAll("[data-toast]").forEach((button) => {
+      button.addEventListener("click", () => showToast(button.dataset.toast));
+    });
+
+    document.querySelector('[data-action="write-article"]').addEventListener("click", () => {
+      showHome();
+      const form = document.getElementById("articleForm");
+      form.hidden = false;
+      document.getElementById("contribute").scrollIntoView({ behavior: "smooth" });
+      document.getElementById("articleTitleInput").focus();
+      document.getElementById("sidebar").classList.remove("open");
+      document.getElementById("menuToggle").setAttribute("aria-expanded", "false");
+    });
+
+    document.getElementById("openEditor").addEventListener("click", () => {
+      document.getElementById("articleForm").hidden = false;
+      document.getElementById("articleTitleInput").focus();
+    });
+
+    document.getElementById("cancelEditor").addEventListener("click", () => {
+      document.getElementById("articleForm").reset();
+      document.getElementById("articleForm").hidden = true;
+      document.getElementById("articleFormError").hidden = true;
+      document.getElementById("articlePreview").hidden = true;
+    });
+
+    document.getElementById("previewArticle").addEventListener("click", () => {
+      const title = document.getElementById("articleTitleInput").value.trim();
+      const content = document.getElementById("articleContentInput").value.trim();
+      const category = document.getElementById("articleCategoryInput").value;
+      const summary = document.getElementById("articleSummaryInput").value.trim();
+      const sources = document.getElementById("articleSourcesInput").value.trim();
+      const error = document.getElementById("articleFormError");
+      if (title.length < 3 || summary.length < 10 || content.length < 30) {
+        error.textContent = "Isi judul, ringkasan, dan artikel sebelum melihat pratinjau.";
+        error.hidden = false;
+        return;
+      }
+      error.hidden = true;
+      document.getElementById("previewTitle").textContent = title;
+      document.getElementById("previewMeta").textContent = `${categoryNames[category]} · Pratinjau`;
+      renderUserArticle({ content, sources }, document.getElementById("previewBody"));
+      document.getElementById("articlePreview").hidden = false;
+    });
+
+    document.getElementById("articleFileInput").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      const error = document.getElementById("articleFormError");
+      error.hidden = true;
+      if (!file) return;
+      if (!/\.(txt|md|markdown)$/i.test(file.name) || file.size > 512 * 1024) {
+        error.textContent = "Pilih berkas .txt atau .md yang ukurannya tidak lebih dari 500 KB.";
+        error.hidden = false;
+        event.target.value = "";
+        return;
+      }
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        const content = typeof reader.result === "string" ? reader.result : "";
+        if (content.length > 20000) {
+          error.textContent = "Isi berkas melebihi batas 20.000 karakter.";
+          error.hidden = false;
+          event.target.value = "";
+          return;
+        }
+        document.getElementById("articleContentInput").value = content;
+        if (!document.getElementById("articleTitleInput").value.trim()) {
+          document.getElementById("articleTitleInput").value = file.name.replace(/\.(txt|md|markdown)$/i, "").replace(/[-_]/g, " ");
+        }
+      });
+      reader.addEventListener("error", () => {
+        error.textContent = "Berkas tidak dapat dibaca. Coba pilih berkas teks lain.";
+        error.hidden = false;
+      });
+      reader.readAsText(file);
+    });
+
+    document.getElementById("articleForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const error = document.getElementById("articleFormError");
+      const title = document.getElementById("articleTitleInput").value.trim();
+      const category = document.getElementById("articleCategoryInput").value;
+      const summary = document.getElementById("articleSummaryInput").value.trim();
+      const content = document.getElementById("articleContentInput").value.trim();
+      const sources = document.getElementById("articleSourcesInput").value.trim();
+      if (!form.reportValidity()) return;
+      if (title.length < 3 || summary.length < 10 || content.length < 30) {
+        error.textContent = "Judul harus minimal 3 karakter, ringkasan 10 karakter, dan isi 30 karakter.";
+        error.hidden = false;
+        return;
+      }
+      if (content.length > 20000 || sources.length > 2000) {
+        error.textContent = "Isi atau sumber melebihi batas karakter yang diizinkan.";
+        error.hidden = false;
+        return;
+      }
+
+      const id = `kontribusi-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      const article = {
+        id,
+        title,
+        category,
+        summary,
+        content,
+        sources,
+        read: "Artikel kontributor",
+        createdAt: new Date().toISOString()
+      };
+      try {
+        localStorage.setItem(userArticleStorageKey, JSON.stringify([...Object.values(userArticles), article]));
+      } catch (storageError) {
+        console.error("Artikel tidak dapat disimpan di browser:", storageError);
+        error.textContent = "Artikel gagal disimpan. Periksa ruang penyimpanan browser dan coba lagi.";
+        error.hidden = false;
+        return;
+      }
+
+      userArticles[id] = article;
+      articles[id] = article;
+      addUserArticleCard(article);
+      document.querySelector(".stat-number").textContent = String(Object.keys(articles).length);
+      form.reset();
+      form.hidden = true;
+      error.hidden = true;
+      document.getElementById("articlePreview").hidden = true;
+      showToast("Artikel berhasil disimpan di browser ini.");
+      openArticle(id);
+    });
+
+    function cleanExcerpt(value) {
+      const textOnly = value.replace(/<[^>]*>/g, " ");
+      const decoder = document.createElement("textarea");
+      decoder.innerHTML = textOnly;
+      return decoder.value.replace(/\s+/g, " ").trim();
+    }
+
+    async function searchWikipedia(query) {
+      const section = document.getElementById("wikiResults");
+      const list = document.getElementById("wikiResultsList");
+      const count = document.getElementById("wikiResultCount");
+      const emptyState = document.getElementById("emptyState");
+      const featureGrid = document.getElementById("featureGrid");
+      list.replaceChildren();
+      section.hidden = false;
+      count.textContent = "Sedang mencari...";
+      emptyState.style.display = "none";
+      featureGrid.style.display = "none";
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      try {
+        const endpoint = new URL("https://id.wikipedia.org/w/rest.php/v1/search/page");
+        endpoint.search = new URLSearchParams({ q: query, limit: "10" }).toString();
+        const response = await fetch(endpoint);
+        if (!response.ok) throw new Error(`Wikipedia mengembalikan status ${response.status}.`);
+        const data = await response.json();
+        const results = Array.isArray(data.pages) ? data.pages : [];
+        count.textContent = results.length ? `${results.length} hasil teratas` : "Tidak ada hasil";
+
+        results.forEach((result) => {
+          const item = document.createElement("article");
+          item.className = "wiki-result";
+          const heading = document.createElement("h3");
+          const titleLink = document.createElement("a");
+          titleLink.href = `https://id.wikipedia.org/wiki/${encodeURIComponent(result.key)}`;
+          titleLink.target = "_blank";
+          titleLink.rel = "noopener noreferrer";
+          titleLink.textContent = result.title;
+          heading.append(titleLink);
+          item.append(heading);
+
+          if (result.description) {
+            const description = document.createElement("p");
+            description.textContent = result.description;
+            item.append(description);
+          }
+          if (result.excerpt) {
+            const excerpt = document.createElement("p");
+            excerpt.textContent = cleanExcerpt(result.excerpt);
+            item.append(excerpt);
+          }
+
+          const sourceLink = document.createElement("a");
+          sourceLink.className = "external-article";
+          sourceLink.href = titleLink.href;
+          sourceLink.target = "_blank";
+          sourceLink.rel = "noopener noreferrer";
+          sourceLink.textContent = "Baca artikel dan lihat kontributor di Wikipedia ↗";
+          item.append(sourceLink);
+          list.append(item);
+        });
+
+        if (!results.length) {
+          const message = document.createElement("p");
+          message.className = "empty-state";
+          message.style.display = "block";
+          message.textContent = "Wikipedia tidak menemukan artikel yang cocok. Coba kata kunci lain.";
+          list.append(message);
+        }
+      } catch (error) {
+        count.textContent = "Pencarian gagal";
+        const message = document.createElement("p");
+        message.className = "empty-state";
+        message.style.display = "block";
+        message.textContent = "Wikipedia tidak dapat dijangkau saat ini. Periksa koneksi internet dan coba lagi.";
+        list.append(message);
+        console.error("Pencarian Wikipedia gagal:", error);
+      }
+    }
+
+    document.getElementById("wikiSearchButton").addEventListener("click", async () => {
+      const query = document.getElementById("searchInput").value.trim();
+      if (!query) {
+        document.getElementById("searchInput").focus();
+        showToast("Masukkan kata kunci untuk mencari di Wikipedia.");
+        return;
+      }
+      showHome();
+      await searchWikipedia(query);
+    });
+
+    document.getElementById("searchForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const query = document.getElementById("searchInput").value.trim().toLocaleLowerCase("id");
+      if (!query) {
+        document.getElementById("searchInput").focus();
+        showToast("Masukkan kata kunci untuk mencari artikel.");
+        return;
+      }
+      const terms = query.split(/\s+/).filter(Boolean);
+      const match = Object.entries(articles).find(([, article]) => {
+        const articleText = article.content || article.body.replace(/<[^>]*>/g, " ");
+        const searchableText = `${article.title} ${article.category} ${article.summary || ""} ${articleText} ${article.sources || ""}`.toLocaleLowerCase("id");
+        return terms.every((term) => searchableText.includes(term));
+      });
+      if (match) {
+        document.getElementById("wikiResults").hidden = true;
+        openArticle(match[0]);
+      } else {
+        showHome();
+        await searchWikipedia(document.getElementById("searchInput").value.trim());
+      }
+    });
+
+    document.querySelectorAll("[data-filter]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const category = button.dataset.filter;
+        const cards = [...document.querySelectorAll(".feature-card")];
+        cards.forEach((card) => { card.style.display = card.dataset.category === category ? "grid" : "none"; });
+        document.getElementById("emptyState").style.display = "none";
+        document.getElementById("featureGrid").style.display = "grid";
+        document.getElementById("featured").scrollIntoView({ behavior: "smooth" });
+      });
+    });
+
+    document.querySelectorAll(".side-nav button[data-section]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".side-nav button[data-section]").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        const target = document.getElementById(button.dataset.section);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById("sidebar").classList.remove("open");
+        document.getElementById("menuToggle").setAttribute("aria-expanded", "false");
+      });
+    });
+
+    document.getElementById("menuToggle").addEventListener("click", () => {
+      const sidebar = document.getElementById("sidebar");
+      const isOpen = sidebar.classList.toggle("open");
+      document.getElementById("menuToggle").setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.getElementById("shareArticle").addEventListener("click", async (event) => {
+      event.preventDefault();
+      try {
+        await navigator.clipboard.writeText(location.href);
+        showToast("Tautan artikel berhasil disalin.");
+      } catch {
+        showToast("Salin tautan dari bilah alamat browser.");
+      }
+    });
+
+    const initialArticle = location.hash.slice(1);
+    if (articles[initialArticle]) openArticle(initialArticle);
+  </script>
+</body>
+</html>
